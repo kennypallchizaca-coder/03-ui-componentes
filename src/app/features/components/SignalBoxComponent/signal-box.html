@@ -16,7 +16,31 @@
     {{ valor() }}
   </div>
 
-  <p class="text-sm text-gray-600 mt-2">
+  <p class="text-sm text-gray-600 mt-2 text-center">
     El color cambia automáticamente si el valor supera 20.
   </p>
+
+  <section class="w-full max-w-md bg-white shadow-md rounded-lg p-5 gap-4 flex flex-col">
+    <h2 class="text-lg font-semibold text-gray-800">Barra de progreso interactiva</h2>
+
+    <input
+      type="range"
+      min="0"
+      max="100"
+      class="w-full accent-blue-600"
+      [value]="progreso()"
+      (input)="actualizarProgreso($event)"
+    >
+
+    <div class="relative w-full h-6 bg-gray-200 rounded-full overflow-hidden shadow-inner">
+      <div
+        class="h-full transition-all duration-500 bg-orange-500"
+        [style.width.%]="progreso()"
+      ></div>
+    </div>
+
+    <p class="text-gray-700 font-medium">
+      Progreso: {{ progreso() }}%
+    </p>
+  </section>
 </section>
