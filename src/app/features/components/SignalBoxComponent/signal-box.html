@@ -33,14 +33,18 @@
     >
 
     <div class="relative w-full h-6 bg-gray-200 rounded-full overflow-hidden shadow-inner">
-      <div
-        class="h-full transition-all duration-500 bg-orange-500"
-        [style.width.%]="progreso()"
-      ></div>
-    </div>
+  <div
+    class="h-full transition-all duration-500"
+    [style.width.%]="progreso()"
+    [ngClass]="{
+      'bg-red-500': progreso() < 33,
+      'bg-yellow-500': progreso() >= 33 && progreso() < 66,
+      'bg-green-500': progreso() >= 66
+    }"
+  ></div>
+</div>
 
-    <p class="text-gray-700 font-medium">
-      Progreso: {{ progreso() }}%
-    </p>
-  </section>
-</section>
+<p class="text-gray-700 font-medium">
+  Progreso: {{ progreso() }}%
+</p>
+
