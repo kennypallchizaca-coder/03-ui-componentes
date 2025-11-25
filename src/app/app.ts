@@ -1,13 +1,14 @@
-import { Component, signal } from '@angular/core';
-import { SignalBoxComponent } from './features/components/SignalBoxComponent/signal-box';
+import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [SignalBoxComponent],
+  imports: [RouterOutlet],
   templateUrl: './app.html',
-  styleUrl: './app.css'
+  styleUrl: './app.css',
+  host: {
+    class: 'min-h-screen bg-base-200 text-base-content',
+  },
 })
-export class App {
-  protected readonly title = signal('TailwindCSS en accion');
-}
+export class App {}

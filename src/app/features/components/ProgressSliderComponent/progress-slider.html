@@ -1,0 +1,28 @@
+<section class="w-full max-w-md bg-white shadow-md rounded-lg p-5 gap-4 flex flex-col">
+  <h2 class="text-lg font-semibold text-gray-800">Barra de progreso interactiva</h2>
+
+  <input
+    type="range"
+    min="0"
+    max="100"
+    class="w-full accent-blue-600"
+    [value]="progreso()"
+    (input)="actualizarProgreso($event)"
+  >
+
+  <div class="relative w-full h-6 bg-gray-200 rounded-full overflow-hidden shadow-inner">
+    <div
+      class="h-full transition-all duration-500"
+      [style.width.%]="progreso()"
+      [ngClass]="{
+        'bg-red-500': progreso() < 33,
+        'bg-yellow-500': progreso() >= 33 && progreso() < 66,
+        'bg-green-500': progreso() >= 66
+      }"
+    ></div>
+  </div>
+
+  <p class="text-gray-700 font-medium">
+    Progreso: {{ progreso() }}%
+  </p>
+</section>

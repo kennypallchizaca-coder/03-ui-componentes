@@ -1,0 +1,79 @@
+<section class="min-h-screen bg-base-200 text-base-content">
+  <div class="mx-auto max-w-6xl p-6 lg:p-10 space-y-6">
+    <div class="text-center space-y-2">
+      <h1 class="text-3xl font-bold">The Simpsons API</h1>
+      <p class="text-lg text-neutral-500">Listado de personajes usando HttpClient + Fetch + Signals</p>
+    </div>
+
+    @if (!simpsonsResource()) {
+      <div class="flex justify-center items-center h-64">
+        <span class="loading loading-spinner loading-lg"></span>
+      </div>
+    }
+
+    @if (simpsonsResource()) {
+      <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div class="text-sm text-neutral-500">
+          Pagina {{ paginationService.currentPage() }} de {{ simpsonsResource()?.pages || '...' }}
+        </div>
+        <div class="join">
+          <button
+            class="btn btn-outline join-item"
+            [routerLink]="['/simpsons']"
+            [queryParams]="{ page: paginationService.currentPage() - 1 }"
+            [disabled]="!hasPrev()"
+          >
+            Anterior
+          </button>
+          <button
+            class="btn btn-outline join-item"
+            [routerLink]="['/simpsons']"
+            [queryParams]="{ page: paginationService.currentPage() + 1 }"
+            [disabled]="!hasNext()"
+          >
+            Siguiente
+          </button>
+        </div>
+      </div>
+
+      <div class="overflow-x-auto bg-base-100 rounded-xl shadow-sm border border-base-200">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Avatar</th>
+              <th>Nombre</th>
+              <th>Ocupacion</th>
+              <th>Estado</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (personaje of simpsonsResource()?.results ?? []; track personaje.id) {
+              <tr>
+                <td>
+                  <div class="avatar">
+                    <div class="mask mask-squircle w-12 h-12">
+                      <img [src]="characterImage(personaje.portrait_path)" [alt]="personaje.name" />
+                    </div>
+                  </div>
+                </td>
+                <td class="font-semibold">{{ personaje.name }}</td>
+                <td>{{ personaje.occupation }}</td>
+                <td>
+                  <span class="badge" [class.badge-success]="personaje.status === 'Alive'" [class.badge-error]="personaje.status !== 'Alive'">
+                    {{ personaje.status }}
+                  </span>
+                </td>
+                <td class="text-right">
+                  <a [routerLink]="['/simpsons', personaje.id]" class="btn btn-sm btn-primary">
+                    Ver Detalle
+                  </a>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </div>
+</section>

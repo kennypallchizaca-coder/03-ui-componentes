@@ -1,0 +1,48 @@
+<section class="min-h-screen bg-base-200 text-base-content">
+  <div class="mx-auto max-w-5xl p-6 lg:p-10">
+    @if (!personaje()) {
+      <div class="flex justify-center items-center h-64">
+        <span class="loading loading-spinner loading-lg"></span>
+      </div>
+    }
+
+    @if (personaje()) {
+      <div class="card bg-base-100 shadow-xl border border-base-200">
+        <div class="card-body grid gap-8 lg:grid-cols-[240px_1fr]">
+          <div class="flex justify-center">
+            <img
+              [src]="characterImage(personaje()?.portrait_path || '')"
+              [alt]="personaje()?.name"
+              class="w-56 rounded-lg shadow"
+            />
+          </div>
+          <div class="space-y-3">
+            <h1 class="card-title text-3xl font-bold">{{ personaje()?.name }}</h1>
+            <p class="text-neutral-500">{{ personaje()?.occupation }}</p>
+            <p class="text-sm text-neutral-500">Estado: {{ personaje()?.status }}</p>
+            <p class="leading-relaxed">{{ personaje()?.description }}</p>
+
+            <div class="space-y-2">
+              <h3 class="font-semibold text-lg">Frases destacadas</h3>
+              <ul class="list-disc pl-5 space-y-1">
+                @for (frase of personaje()?.phrases ?? []; track frase) {
+                  <li>{{ frase }}</li>
+                }
+              </ul>
+            </div>
+
+            <div class="rounded-lg bg-base-200 p-4 space-y-2">
+              <h3 class="font-semibold text-lg">Primera aparicion</h3>
+              <p class="font-medium">{{ personaje()?.first_appearance_ep?.name }}</p>
+              <p class="text-sm text-neutral-500">{{ personaje()?.first_appearance_ep?.airdate }}</p>
+              <p class="text-sm">{{ personaje()?.first_appearance_ep?.description }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="card-actions justify-end p-6 pt-0">
+          <a routerLink="/simpsons" class="btn btn-outline">Volver al listado</a>
+        </div>
+      </div>
+    }
+  </div>
+</section>
