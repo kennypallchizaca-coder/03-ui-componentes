@@ -7,7 +7,7 @@ import { map } from 'rxjs';
 export class PaginationService {
   private activatedRoute = inject(ActivatedRoute);
 
-  // Convierte ?page=2 en una señal reactiva
+  // Convierte ?page=2 en una senal reactiva
   currentPage = toSignal(
     this.activatedRoute.queryParamMap.pipe(
       map((params) => (params.get('page') ? +params.get('page')! : 1)),

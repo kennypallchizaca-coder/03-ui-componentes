@@ -17,12 +17,14 @@ export class SimpsonDetailPageComponent {
   private route = inject(ActivatedRoute);
   private service = inject(SimpsonsService);
 
-  personaje: Signal<SimpsonsCharacterDetail | null> = toSignal(
+  personaje: Signal<SimpsonsCharacterDetail | null | undefined> = toSignal<
+    SimpsonsCharacterDetail | null | undefined
+  >(
     this.route.paramMap.pipe(
       map((params) => Number(params.get('id'))),
       switchMap((id) => (Number.isNaN(id) ? of(null) : this.service.getCharacterById(id)))
     ),
-    { initialValue: null }
+    { initialValue: undefined }
   );
 
   protected characterImage(path: string): string {

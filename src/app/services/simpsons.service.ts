@@ -19,6 +19,11 @@ export class SimpsonsService {
     );
   }
 
+  getInstitucionesUsers(params: { offset: number; limit: number }): Observable<SimpsonsResponse> {
+    const page = Math.max(1, Math.floor(params.offset / params.limit) + 1);
+    return this.getCharacters(page);
+  }
+
   getCharacterById(id: number): Observable<SimpsonsCharacterDetail | null> {
     return this.http.get<SimpsonsCharacterDetail>(`${this.API_URL}/characters/${id}`).pipe(
       catchError((err) => {

@@ -1,6 +1,6 @@
 <section class="min-h-screen bg-base-200 text-base-content">
   <div class="mx-auto max-w-5xl p-6 lg:p-10">
-    @if (!personaje()) {
+    @if (personaje() === undefined) {
       <div class="flex justify-center items-center h-64">
         <span class="loading loading-spinner loading-lg"></span>
       </div>
@@ -41,6 +41,15 @@
         </div>
         <div class="card-actions justify-end p-6 pt-0">
           <a routerLink="/simpsons" class="btn btn-outline">Volver al listado</a>
+        </div>
+      </div>
+    } @else {
+      <div class="alert alert-error">
+        <div>
+          <span>No se encontro el personaje solicitado.</span>
+        </div>
+        <div>
+          <a routerLink="/simpsons" class="btn btn-sm">Volver al listado</a>
         </div>
       </div>
     }
