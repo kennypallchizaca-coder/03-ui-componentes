@@ -27,10 +27,14 @@ export class SimpsonDetailPageComponent {
     { initialValue: undefined }
   );
 
+  private readonly IMAGE_CDN_SIZE = '500';
+
   protected characterImage(path: string): string {
     if (!path) {
       return 'https://placehold.co/200x260?text=Simpson';
     }
-    return path.startsWith('http') ? path : `https://cdn.thesimpsonsapi.com${path}`;
+    return path.startsWith('http')
+      ? path
+      : `https://cdn.thesimpsonsapi.com/${this.IMAGE_CDN_SIZE}${path}`;
   }
 }
