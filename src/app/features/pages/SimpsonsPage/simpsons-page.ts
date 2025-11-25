@@ -7,7 +7,7 @@ import { SimpsonsService } from '../../../services/simpsons.service';
 import { PaginationService } from '../../../services/pagination.service';
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
 import { BreadcrumbsComponent } from '../../../shared/components/breadcrumbs/breadcrumbs.component';
-import { HeroSimpsonsComponent } from '../../simpsons/components/hero-simpsons/hero-simpsons.component';
+import { HeroSimpsonsComponent } from './components/hero-simpsons/hero-simpsons.component';
 
 @Component({
   selector: 'app-simpsons-page',
