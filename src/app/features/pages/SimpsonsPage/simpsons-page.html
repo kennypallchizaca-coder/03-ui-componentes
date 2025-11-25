@@ -20,14 +20,16 @@
           <button
             class="btn btn-outline join-item"
             [routerLink]="['/simpsons']"
-            [queryParams]="{ page: paginationService.currentPage() - 1 }"
+            [queryParams]="{ page: previousPage() }"
+            [class.btn-disabled]="!canGoPrev()"
           >
             Anterior
           </button>
           <button
             class="btn btn-outline join-item"
             [routerLink]="['/simpsons']"
-            [queryParams]="{ page: paginationService.currentPage() + 1 }"
+            [queryParams]="{ page: nextPage() }"
+            [class.btn-disabled]="!canGoNext()"
           >
             Siguiente
           </button>
