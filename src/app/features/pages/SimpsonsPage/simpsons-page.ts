@@ -1,21 +1,26 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { map, switchMap } from 'rxjs';
 import { SimpsonsService } from '../../../services/simpsons.service';
 import { PaginationService } from '../../../services/pagination.service';
+import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
+import { BreadcrumbsComponent } from '../../../shared/components/breadcrumbs/breadcrumbs.component';
+import { HeroSimpsonsComponent } from './components/hero-simpsons/hero-simpsons.component';
 
 @Component({
   selector: 'app-simpsons-page',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, PaginationComponent, BreadcrumbsComponent, HeroSimpsonsComponent],
   templateUrl: './simpsons-page.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SimpsonsPageComponent {
   private simpsonsService = inject(SimpsonsService);
   paginationService = inject(PaginationService);
+
+  totalPages = signal(0);
 
   simpsonsResource = toSignal(
     toObservable(this.paginationService.currentPage).pipe(
@@ -25,29 +30,18 @@ export class SimpsonsPageComponent {
     { initialValue: null }
   );
 
+  constructor() {
+    effect(() => {
+      if (this.simpsonsResource()?.pages) {
+        this.totalPages.set(this.simpsonsResource()!.pages);
+      }
+    });
+  }
+
   protected characterImage(path: string): string {
     if (!path) {
       return 'https://placehold.co/150x150?text=Simpson';
     }
     return path.startsWith('http') ? path : `https://cdn.thesimpsonsapi.com${path}`;
-  }
-
-  protected previousPage(): number {
-    return Math.max(1, this.paginationService.currentPage() - 1);
-  }
-
-  protected nextPage(): number {
-    const totalPages = this.simpsonsResource()?.pages;
-    const next = this.paginationService.currentPage() + 1;
-    return totalPages ? Math.min(totalPages, next) : next;
-  }
-
-  protected canGoPrev(): boolean {
-    return this.paginationService.currentPage() > 1;
-  }
-
-  protected canGoNext(): boolean {
-    const totalPages = this.simpsonsResource()?.pages;
-    return totalPages ? this.paginationService.currentPage() < totalPages : true;
   }
 }
