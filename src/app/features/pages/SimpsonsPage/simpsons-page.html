@@ -1,38 +1,37 @@
-<section class="min-h-screen bg-base-200 text-base-content">
-  <div class="mx-auto max-w-6xl p-6 lg:p-10 space-y-6">
-    <div class="text-center space-y-2">
-      <h1 class="text-3xl font-bold">The Simpsons API</h1>
-      <p class="text-lg text-neutral-500">Listado de personajes usando HttpClient + Fetch + Signals</p>
-    </div>
+<app-breadcrumbs
+  [items]="[
+    { label: 'Inicio', link: '/' },
+    { label: 'Simpsons', link: '/simpsons' },
+    { label: 'Personajes' }
+  ]"
+/>
 
-    @if (!simpsonsResource()) {
-      <div class="flex justify-center items-center h-64">
-        <span class="loading loading-spinner loading-lg"></span>
+<section class="p-6">
+  <app-hero-simpsons
+    [simpsonsCount]="simpsonsResource()?.count ?? 0"
+    [totalPages]="totalPages()"
+  ></app-hero-simpsons>
+
+  <div class="mt-8 space-y-6">
+    @if (totalPages() > 0) {
+      <div class="flex gap-2 items-center h-20 mb-4">
+        <app-pagination
+          [pages]="totalPages()"
+          [currentPage]="paginationService.currentPage()"
+        />
+
+        <div class="flex flex-1"></div>
       </div>
     }
 
-    @if (simpsonsResource()) {
+    @if (simpsonsResource() === null) {
+      <div class="flex justify-center items-center h-64">
+        <span class="loading loading-spinner loading-lg"></span>
+      </div>
+    } @else {
       <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div class="text-sm text-neutral-500">
-          Pagina {{ paginationService.currentPage() }} de {{ simpsonsResource()?.pages || '...' }}
-        </div>
-        <div class="join">
-          <button
-            class="btn btn-outline join-item"
-            [routerLink]="['/simpsons']"
-            [queryParams]="{ page: previousPage() }"
-            [class.btn-disabled]="!canGoPrev()"
-          >
-            Anterior
-          </button>
-          <button
-            class="btn btn-outline join-item"
-            [routerLink]="['/simpsons']"
-            [queryParams]="{ page: nextPage() }"
-            [class.btn-disabled]="!canGoNext()"
-          >
-            Siguiente
-          </button>
+          Pagina {{ paginationService.currentPage() }} de {{ totalPages() || '...' }}
         </div>
       </div>
 
@@ -65,7 +64,11 @@
                   <td class="font-semibold">{{ personaje.name }}</td>
                   <td>{{ personaje.occupation }}</td>
                   <td>
-                    <span class="badge" [class.badge-success]="personaje.status === 'Alive'" [class.badge-error]="personaje.status !== 'Alive'">
+                    <span
+                      class="badge"
+                      [class.badge-success]="personaje.status === 'Alive'"
+                      [class.badge-error]="personaje.status !== 'Alive'"
+                    >
                       {{ personaje.status }}
                     </span>
                   </td>
